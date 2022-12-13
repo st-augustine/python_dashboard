@@ -99,7 +99,6 @@ def iqr_df(df, column):
 # %%
 #plot population density by oa
 
-
 popden_merge_iq=iqr_df(popden_merge,'OBS_VALUE')
 
 fig = px.choropleth(data_frame=popden_merge_iq,
@@ -115,31 +114,37 @@ fig.show()
 # %%
 #MERGE WARD BOUNDARIES DF WITH LSOA DF
 
-geo_df_merged= merged_oa_ward.merge(ward_lsoa_lookup, left_on='OA21CD', right_on='oa21cd')
+popden_wd_oa_merged= popden_merge.merge(wd_oa_lkup, left_on='OA21CD', right_on='oa21cd')
 
-geo_df_merged.head()
-
-# %%
-#AGGREGATE OAS INTO WARDS 
-
-ward_oa_agg= geo_df_merged.dissolve(by='ward_name')
+popden_wd_oa_merged.head()
 
 # %%
 #PLOT AGGREGATED OA WARDS
 
 wards, ax =plt.subplots(1,1, figsize=(12, 12))
-ward_oa_agg.plot(facecolor='none', linewidth=1, edgecolor="black",ax=ax,legend=True).axis('off')
+popden_wd_oa_merged.dissolve(by='ward_name').plot(facecolor='none', linewidth=1, edgecolor="black",ax=ax,legend=True).axis('off')
 
 # %%
 #MAKE PLOTY MAP OF POPULATION DENSITY BT WARD
 
-fig = px.choropleth(ward_oa_agg,
-                   geojson=ward_oa_agg.geometry,
-                   locations=ward_oa_agg.index,
-                   color="Population Density",
-                   projection="mercator")
+popden_wd_oa_merged['OBS_VALUE']=popden_wd_oa_merged[]
+
+fig = px.choropleth(popden_wd_oa_merged.dissolve(by='ward_name'),
+                   geojson=popden_wd_oa_merged.dissolve(by='ward_name').geometry,
+                   locations=popden_wd_oa_merged.dissolve(by='ward_name').index,
+                   color="OBS_VALUE",
+                   color_continuous_scale = 'viridis_r',
+                   projection="mercator",
+                   hover_name=popden_wd_oa_merged.dissolve(by='ward_name').index,
+                   hover_data=['OBS_VALUE'])
 fig.update_geos(fitbounds="locations", visible=False)
 fig.show()
+
+# %%
+popden_wd_oa_merged.dissolve(by='ward_name')
+
+# %%
+text=popden_wd_oa_merged.apply(lambda row: f"{row['ward_name']}%<br>{row['OBS_VALUE']}", axis=1)
 
 # %%
 st.plotly_chart(fig)
