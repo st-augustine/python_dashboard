@@ -5,8 +5,12 @@ import pandas as pd
 import numpy as np 
 import streamlit as st
 import geopandas as gpd
+#import matplotlib.pyplot as plt
+#from matplotlib.figure import Figure
+#import panel as pn
+#pn.extension()
+#import plotly.graph_objects as go
 import plotly.express as px
-import matplotlib as plt
 
 # %% [markdown]
 # Boundaries
@@ -117,8 +121,8 @@ popden_wd_oa_merged.head()
 # %%
 #PLOT AGGREGATED OA WARDS
 
-wards, ax =plt.subplots(1,1, figsize=(12, 12))
-popden_wd_oa_merged.dissolve(by='ward_name').plot(facecolor='none', linewidth=1, edgecolor="black",ax=ax,legend=True).axis('off')
+#wards, ax =plt.subplots(1,1, figsize=(12, 12))
+#.plot(facecolor='none', linewidth=1, edgecolor="black",ax=ax,legend=True).axis('off')
 
 # %%
 #MAKE PLOTY MAP OF POPULATION DENSITY BT WARD
