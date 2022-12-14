@@ -20,12 +20,6 @@ except Exception:
   wd22.to_file('wd22.geojson', driver='GeoJSON')
 
 # %%
-#PLOT WARD BOUNDARIES 
-
-#fig, ax =plt.subplots(1,1, figsize=(12, 12))
-#wd22.plot(facecolor='none', linewidth=1, edgecolor="black",ax=ax,legend=True).axis('off')
-
-# %%
 # 2021 lsoa boundaries
 try:
   lsoa21 = gpd.read_file('lbth_lsoa21.geojson')
@@ -79,59 +73,9 @@ except:
 popden_merge=merge_spatial_data(oa21, popden_oa,"OA21CD", "GEOGRAPHY_CODE")
 
 # %%
-popden_oa.describe()  #highly skewed df
-
-
-# %%
-# return a dataframe without inter quartile range outliers on a given dataframe column
-def iqr_df(df, column):
-    Q1 = df[column].quantile(0.25)
-    Q3 = df[column].quantile(0.75)
-    IQR = Q3 - Q1
-    trueList = ~((df[column] < (Q1 - 3 * IQR)) | (df[column] > (Q3 + 3 * IQR)))
-    return df[trueList]
-
-# %%
-#plot population density by oa
-
-popden_merge_iq=iqr_df(popden_merge,'OBS_VALUE')
-
-#fig = px.choropleth(data_frame=popden_merge_iq,
-                   #geojson=popden_merge_iq.geometry,
-                   #locations=popden_merge_iq.index,
-                   #color="OBS_VALUE",
-                   #range_color=(0, 100000),
-                   #color_continuous_scale = 'viridis_r',
-                   #projection='mercator')
-##fig.update_geos(fitbounds="geojson", visible=False)
-#fig.show()
-
-# %%
 #MERGE WARD BOUNDARIES DF WITH LSOA DF
 
 popden_wd_oa_merged= popden_merge.merge(wd_oa_lkup, left_on='OA21CD', right_on='oa21cd')
-
-popden_wd_oa_merged.head()
-
-# %%
-#PLOT AGGREGATED OA WARDS
-
-#wards, ax =plt.subplots(1,1, figsize=(12, 12))
-#.plot(facecolor='none', linewidth=1, edgecolor="black",ax=ax,legend=True).axis('off')
-
-# %%
-#MAKE PLOTY MAP OF POPULATION DENSITY BT WARD
-
-#fig = px.choropleth(popden_wd_oa_merged.dissolve(by='ward_name'),
-                   #geojson=popden_wd_oa_merged.dissolve(by='ward_name').geometry,
-                   #locations=popden_wd_oa_merged.dissolve(by='ward_name').index,
-                   #color="OBS_VALUE",
-                   #color_continuous_scale = 'viridis_r',
-                   #projection="mercator",
-                   #hover_name=popden_wd_oa_merged.dissolve(by='ward_name').index,
-                   #hover_data=['OBS_VALUE'])
-#fig.update_geos(fitbounds="locations", visible=False)
-#fig.show()
 
 # %%
 #READ IN DEPRIVATION DATASET 
