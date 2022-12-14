@@ -3,4 +3,4 @@ pandas
 numpy
 plotly.express
 geopandas
-matplotlib
+matplotlib.pyplot
