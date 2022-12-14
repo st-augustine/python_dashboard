@@ -61,6 +61,11 @@ def merge_spatial_data(gdf, df, left_on="", right_on=""):
 # --
 
 # %%
+#merge oa and ward df
+
+merged_wd_oa=oa21.merge(wd_oa_lkup,left_on='OA21CD', right_on='oa21cd')
+
+# %%
 #POPULATION DENSITY BY OA
 
 try:
@@ -70,12 +75,12 @@ except:
   popden_oa.to_csv('lbth_census_2021_popden_oa.csv')
 
 # %%
-popden_merge=merge_spatial_data(oa21, popden_oa,"OA21CD", "GEOGRAPHY_CODE")
+popden_merge=merge_spatial_data(merged_wd_oa, popden_oa,"OA21CD", "GEOGRAPHY_CODE")
 
 # %%
 #MERGE WARD BOUNDARIES DF WITH LSOA DF
 
-popden_wd_oa_merged= popden_merge.merge(wd_oa_lkup, left_on='OA21CD', right_on='oa21cd')
+#popden_wd_oa_merged= popden_merge.merge(wd_oa_lkup, left_on='OA21CD', right_on='oa21cd')
 
 # %%
 #READ IN DEPRIVATION DATASET 
@@ -107,21 +112,21 @@ if page == 'Population density':
   
   #MAKE PLOTY MAP OF POPULATION DENSITY BT WARD
 
- fig = px.choropleth(popden_wd_oa_merged.dissolve(by='ward_name'),
-                   geojson=popden_wd_oa_merged.dissolve(by='ward_name').geometry,
-                   locations=popden_wd_oa_merged.dissolve(by='ward_name').index,
+ fig = px.choropleth(popden_merge.dissolve(by='ward_name'),
+                   geojson=popden_merge.dissolve(by='ward_name').geometry,
+                   locations=popden_merge.dissolve(by='ward_name').index,
                    color="OBS_VALUE",
                    color_continuous_scale = 'viridis_r',
                    projection="mercator",
-                   hover_name=popden_wd_oa_merged.dissolve(by='ward_name').index,
+                   hover_name=popden_merge.dissolve(by='ward_name').index,
                    hover_data=['OBS_VALUE'])
  fig.update_geos(fitbounds="locations", visible=False)
  st.plotly_chart(fig,use_container_width = True)
     
 else: 
  fig = px.choropleth(deprivation_wd_oa_merged.dissolve(by='ward_name'),
-                   geojson=popden_wd_oa_merged.dissolve(by='ward_name').geometry,
-                   locations=popden_wd_oa_merged.dissolve(by='ward_name').index,
+                   geojson=deprivation_wd_oa_merged.dissolve(by='ward_name').geometry,
+                   locations=deprivation_wd_oa_merged.dissolve(by='ward_name').index,
                    color="OBS_VALUE",
                    color_continuous_scale = 'viridis_r',
                    projection="mercator",
