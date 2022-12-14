@@ -6,6 +6,7 @@ import numpy as np
 import streamlit as st
 import geopandas as gpd
 import plotly.express as px
+import matplotlib as plt
 
 # %% [markdown]
 # Boundaries
