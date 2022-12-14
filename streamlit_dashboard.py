@@ -1,5 +1,13 @@
+# %% [markdown]
+# Streamlit dashboard
+# ==
+
+# %% [markdown]
+# Packages
+# --
+
 # %%
-#IMPORT REQUIRED PACKAGES 
+#import required packages
 
 import pandas as pd
 import numpy as np 
@@ -66,7 +74,7 @@ def merge_spatial_data(gdf, df, left_on="", right_on=""):
 merged_wd_oa=oa21.merge(wd_oa_lkup,left_on='OA21CD', right_on='oa21cd')
 
 # %%
-#READ IN POPULATION DENSITY BY OA
+#read in population density by oa dataset
 
 try:
   popden_oa = pd.read_csv('lbth_census_2021_popden_oa.csv')
@@ -78,7 +86,7 @@ except:
 popden_merge=merge_spatial_data(merged_wd_oa, popden_oa,"OA21CD", "GEOGRAPHY_CODE")  
 
 # %%
-#READ IN DEPRIVATION BY OA
+#read in deprivation by oa dataset
 
 try:
   deprivation_oa = pd.read_csv('lbth_census_2021_deprivation_oa.csv')
@@ -91,7 +99,7 @@ deprivation_merge=merge_spatial_data(merged_wd_oa, deprivation_oa,"OA21CD", "GEO
 
 # %% [markdown]
 # Multi-variable dashboard
-# ==
+# --
 
 # %%
 st.set_page_config(layout = "wide")
@@ -102,7 +110,7 @@ page = st.sidebar.selectbox('Select variable',
 
 if page == 'Population density':
   
-  #MAKE PLOTY MAP OF POPULATION DENSITY BT WARD
+
 
  fig = px.choropleth(popden_merge.dissolve(by='ward_name'),
                    geojson=popden_merge.dissolve(by='ward_name').geometry,
