@@ -27,8 +27,8 @@ except Exception:
 # %%
 #PLOT WARD BOUNDARIES 
 
-fig, ax =plt.subplots(1,1, figsize=(12, 12))
-wd22.plot(facecolor='none', linewidth=1, edgecolor="black",ax=ax,legend=True).axis('off')
+#fig, ax =plt.subplots(1,1, figsize=(12, 12))
+#wd22.plot(facecolor='none', linewidth=1, edgecolor="black",ax=ax,legend=True).axis('off')
 
 # %%
 # 2021 lsoa boundaries
