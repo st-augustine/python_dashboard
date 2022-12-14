@@ -5,11 +5,6 @@ import pandas as pd
 import numpy as np 
 import streamlit as st
 import geopandas as gpd
-#import matplotlib.pyplot as plt
-#from matplotlib.figure import Figure
-#import panel as pn
-#pn.extension()
-#import plotly.graph_objects as go
 import plotly.express as px
 
 # %% [markdown]
