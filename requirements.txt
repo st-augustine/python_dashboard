@@ -1,5 +1,5 @@
-streamlit as st
-pandas as pd
-numpy as np
-plotly.express as px
-geopandas as gpd
+streamlit
+pandas
+numpy
+plotly.express
+geopandas
